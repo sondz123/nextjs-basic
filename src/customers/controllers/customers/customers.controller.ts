@@ -18,7 +18,7 @@ import { CustomersService } from 'src/customers/services/customers/customers.ser
         }
     }
 
-    @Get('/seach/:id') 
+    @Get('/search/:id') 
     searchCustomerById(@Param('id', ParseIntPipe) id: number) {
         const customer = this.customersService.findCustomerById(id);
         if(customer) return customer;

@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, Res, UseInterceptors} from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, Post, Res, UseInterceptors, UsePipes, ValidationPipe} from '@nestjs/common';
 import { UsersService } from 'src/users/services/users/users.service';
 import { Response } from 'express';
 import { SerializedUser } from 'src/users/types/User';
+import { UserNotFoundException } from 'src/users/exceptions/UserNotFound.exception';
+import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
 
 
 /*
@@ -45,6 +47,13 @@ export class UsersController {
         //         data: data
         //     })
         // }
-        else throw new HttpException("User not found", HttpStatus.BAD_REQUEST)
+        else throw new UserNotFoundException('User not found');
     }
+
+    @Post('create')
+    @UsePipes(ValidationPipe)
+    createUser(@Body() createUserDto : CreateUserDto){
+       this.userService.createUser(createUserDto);
+    }
+
 }
